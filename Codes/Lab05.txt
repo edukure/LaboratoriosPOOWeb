@@ -1,0 +1,125 @@
+    bool ShowAlert { get; set; } = false;
+    bool isValid { get; set; } = false;
+
+    string InputString = "";
+
+    char OpeningBraces = '{';
+    char OpeningBrackets = '[';
+    char OpeningParentheses = '(';
+    char ClosingBraces = '}';
+    char ClosingBrackets = ']';
+    char ClosingParentheses = ')';
+
+
+    int conta = 0;
+    string desc { get; set; }
+
+
+    public void VerifyExpression()
+    {
+        isValid = false;
+        Pilha<char> pilha = new Pilha<char>();
+
+        List<char> caracteres = SepararCaracteres(InputString);
+        int symbolCount = 0;
+
+        for (int pos = 0; pos < caracteres.Count; pos++)
+        {
+            if (caracteres[pos] == OpeningBraces || caracteres[pos] == OpeningBrackets || caracteres[pos] == OpeningParentheses)
+            {
+                pilha.Push(InputString[pos]);
+                symbolCount++;
+            }
+            else if (caracteres[pos] == ClosingBraces)
+            {
+                try
+                {
+                    if (pilha.Peek() == OpeningBraces)
+                    {
+                        pilha.Pop();
+                        isValid = true;
+                        symbolCount--;
+                    }
+                    else
+                    {
+                        isValid = false;
+                    }
+                }
+                catch
+                {
+                    isValid = false;
+                    symbolCount--;
+                }
+            }
+            else if (caracteres[pos] == ClosingBrackets)
+            {
+                try
+                {
+                    if (pilha.Peek() == OpeningBrackets)
+                    {
+                        pilha.Pop();
+                        isValid = true;
+                        symbolCount--;
+
+
+                    }
+                    else
+                    {
+                        isValid = false;
+                        symbolCount--;
+                    }
+                }
+                catch
+                {
+                    isValid = false;
+                }
+
+            }
+            else if (caracteres[pos] == ClosingParentheses)
+            {
+                try
+                {
+                    if (pilha.Peek() == OpeningParentheses)
+                    {
+                        pilha.Pop();
+                        isValid = true;
+                        symbolCount--;
+                    }
+                    else
+                    {
+                        isValid = false;
+                        symbolCount--;
+                    }
+                }
+                catch
+                {
+                    isValid = false;
+                }
+
+
+            }
+
+        }
+
+        if (symbolCount != 0)
+        {
+            isValid = false;
+        }
+        else
+        {
+            isValid = true;
+        }
+
+        ShowAlert = true;
+    }
+
+    public List<char> SepararCaracteres(string text)
+    {
+        List<char> result = new List<char>();
+        for (int k = 0; k < text.Length; k++)
+        {
+            result.Add(text[k]);
+        }
+
+        return result;
+    }
